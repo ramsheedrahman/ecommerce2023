@@ -8,31 +8,33 @@ function CategoryProduct() {
   const navigate=useNavigate()
     const [products ,setProducts]=useState([])
     const params=useParams()
-    console.log(params);
-    useEffect(()=>{
-        const getProductsByCateogory=async()=>{
-            try {
-                const {data}=await axios.get(`http://localhost:8000/product/get-productbyCategory/${params.id}`)
-                  setProducts(data.products)
-            } catch (error) {
-                console.log(error.message);
-            }
-           
+    console.log(params.id);
+    useEffect(() => {
+      console.log('Fetching products by category');
+      const getProductsByCategory = async () => {
+        try {
+          const { data } = await axios.get(`http://localhost:8000/product/get-productbyCategory/${params.id}`);
+          console.log('Received data:', data);
+          setProducts(data?.products);
+        } catch (error) {
+          console.log('Error:', error.message);
         }
-getProductsByCateogory() 
-   },[params._id]) 
-   console.log(products);
+      };
+    
+      if (params?.id) {
+        getProductsByCategory();
+      }
+    }, [params.id]);
+    
    const handleAddtoCart=()=>{
 
    }          
   return (
     <Layout>
-      <div className="container-fluid">
+      <div className="container-fluid " style={{marginTop:'100px'}}>
         <div className="row">
-          <div className="col-3 col-md-2">
-            <UserMenu/>
-          </div>
-          <div className="col-9 col-md-10 product-section"  >
+          
+          <div className="col-12 product-section"  >
           <div className="row">
             {products?.map((p) => (
               <div className=" col-md-3 d-flex justify-content-center ">

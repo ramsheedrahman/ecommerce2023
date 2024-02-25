@@ -10,6 +10,7 @@ const stripeInstance = stripe('sk_test_HpOseewlg7jroZ7Fmu66hUf9005d8TvxWu',{apiV
 import createInvoice from '../helpers/pdfGenerator.js'
 import { fileURLToPath, URL } from 'url';
 import { dirname, join } from 'path';
+import { log } from "console";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -304,67 +305,71 @@ await products.save();
     }
   };
   
-  export const createOrder=async(req,res)=>{
-    const {cart,paymentIntent,totalQuantity}=req.body
-    const orderId=uuidv4();
-const shortOrderId=orderId.slice(0, 6);
+  export const createOrder = async (req, res) => {
+    const { cart, paymentIntent, totalQuantity } = req.body;
+    const orderId = uuidv4();
+    const shortOrderId = orderId.slice(0, 6);
 
     console.log(req.body);
     try {
-      const originalAmount = paymentIntent.amount / 100;
+        const originalAmount = paymentIntent.amount / 100;
 
-      const order =await new orderSchema({
-        products: cart,
-        quantity:totalQuantity,
-        payment: {...paymentIntent,originalAmount: originalAmount,
-        },
-        buyer: req.user._id,
-        orderID:shortOrderId
+        const order = await new orderSchema({
+            products: cart,
+            quantity: totalQuantity,
+            payment: {
+                ...paymentIntent,
+                originalAmount: originalAmount,
+            },
+            buyer: req.user._id,
+            orderID: shortOrderId,
+        }).save();
 
-      }).save();
+        const pdfFilePath = `C:\\Users\\Lenovo\\Desktop\\ecommerce\\server\\invoices\\${shortOrderId}.pdf`;
 
-      
-      const pdfFilePath = 'C:\\Users\\Lenovo\\Desktop\\ecommerce\\invoices\\809ec1.pdf';
-      createInvoice(order, pdfFilePath);
-
+        createInvoice(order, pdfFilePath);
     } catch (error) {
-      console.log(error);
+        console.log(error);
     }
-    
-  }
+};
 
 export const invoiceDownload = async (req, res) => {
-  try {
-    const {id} = req.params; 
-    const pdfFilePath = `C:\\Users\\Lenovo\\Desktop\\ecommerce\\invoices\\${id}.pdf`;
+    try {
+        const { id } = req.params;
+        const pdfFilePath = `C:\\Users\\Lenovo\\Desktop\\ecommerce\\server\\invoices\\${id}.pdf`;
 
-    res.download(pdfFilePath, (error) => {
-      if (error) {
-        console.log(error);
-        res.status(500).send({
-          success: false,
-          error,
-          message: "Error in Invoice Download",
+        res.download(pdfFilePath, (error) => {
+            if (error) {
+                console.log(error);
+                res.status(500).send({
+                    success: false,
+                    error,
+                    message: "Error in Invoice Download",
+                });
+            }
         });
-      }
-    });
-  } catch (error) {
-    console.error(error);
-    res.status(500).send({
-      success: false,
-      error,
-      message: "Something goes error",
-    });
-  }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send({
+            success: false,
+            error,
+            message: "Something goes wrong",
+        });
+    }
 };
+
 
     
 
   
-  export const producByCategory = async (req, res) => {
+  export const productByCategory = async (req, res) => {
   try {
-    const category = await categoryschema.findOne({ _id:req.params.id});
-    const products = await productSchema.find({ category }).populate("category");
+    const categoryId = req.params.id.trim();
+
+    const category = await categoryschema.findOne({ _id:categoryId});
+    const products = await productSchema.find({ category }).populate("category").select("-photo");
+
+    console.log('prooo',products);
     res.status(200).send({
       success: true,
       category,
@@ -416,7 +421,7 @@ export const orderCancellaton =async(req,res)=>{
 }
 export const getAllOrders = async (req, res) => {
   try {
-    const allOrders = await orderSchema.find().populate('buyer', 'name').populate('products', '-photo');
+    const allOrders = await orderSchema.find().populate('buyer','name').populate('products', '-photo');
     res.status(200).send(allOrders);
   } catch (error) {
     // Send a more detailed error response

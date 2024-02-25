@@ -37,6 +37,7 @@
 } 
 .span-text{
   margin-left: 0.4rem;
+  font-size: medium;
 }
 
 .sales-chart,.orders-table{

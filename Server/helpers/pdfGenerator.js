@@ -2,7 +2,6 @@
 import fs from 'fs';
 import PDFDocument from 'pdfkit';
 import orderSchema from "../model/oederSchema.js";
-import path from 'path';
 
 async function createInvoice(orderDetails, path) {
   let doc = new PDFDocument({ margin: 50 });
@@ -69,8 +68,8 @@ async function generateCustomerInformation(doc, orderProducts) {
       .text("Invoice Date:", 50, customerInformationTop + 15)
       .text(formattedDate, 150, customerInformationTop + 15)  // Corrected line
       .text(`Buyer:    ${orderProducts.buyer.name}`, 50, customerInformationTop + 30)  // Moved to a new line
-      .text(`Buyer:    ${orderProducts.buyer.address.city}`, 50, customerInformationTop + 36)  // Moved to a new line
-      .text(`Bill Amount:   ${orderProducts.payment.originalAmount}`, 50, customerInformationTop + 45);  // Moved to a new line
+      .text(`Adress:    ${orderProducts.buyer.address.city}`, 50, customerInformationTop + 42)  // Moved to a new line
+      .text(`Bill Amount:   ${orderProducts.payment.originalAmount}`, 50, customerInformationTop + 50);  // Moved to a new line
 
   } catch (error) {
     console.error(error);

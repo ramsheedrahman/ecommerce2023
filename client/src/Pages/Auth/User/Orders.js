@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import UserMenu from '../../../Components/Layout/UserMenu';
 import Layout from '../../../Components/Layout/Layout';
 import axios from 'axios';
 import '../../../Styles/order.css';
@@ -74,7 +73,7 @@ function Orders() {
     <Layout>
       <div className="container">
         <div style={{marginTop:'100px'}}>
-        {orders.length < 1 ? (
+        {!orders ? (
           <h5 style={{color:'red'}}>Orders not Available</h5>
         ) : (
           <>
@@ -91,7 +90,7 @@ function Orders() {
                 <span className='order-date'><span className='oder-hd'>Order Time:</span> {new Date(order.createdAt).toLocaleString()}</span>
                 {order.products.map((product) => (
                   <div key={product._id} className="product-card">
-                    <img className="product-image" src={`http://localhost:8000/product/get-productphoto/${product._id}`} alt="Product Image" />
+                    <img className="product-image" src={`http://localhost:8000/product/get-productphoto/${product._id}`} alt="Product-Image" />
                     <div className="product-info">
                       <h6 className="product-name">{product.name}</h6>
                       <p className="product-quantity">Quantity: {product.quantity}</p>

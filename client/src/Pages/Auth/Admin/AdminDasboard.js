@@ -15,7 +15,7 @@ import { TfiLayoutGrid4Alt } from "react-icons/tfi";
 
 
 function AdminDasboard() {
-const [orderData,setOrderData] =useState([])
+const [orders,setOrders] =useState([])
 const[salesData,setSalesData]=useState([])
 useEffect(() => {
   const fetchData = async () => {
@@ -70,9 +70,8 @@ useEffect(() => {
   const hasUser = !!User && Object.keys(User).length;
   
   
-  const [orders,setOrders]=useState([])
 
-  const totalSalesAmount=orders.reduce((total,order)=>total+order.payment.amount,0)
+  const totalSalesAmount=orders.reduce((total,order)=>total+order.payment.originalAmount,0)
 
   useEffect(() => {
     const getOrders = async () => {
@@ -83,6 +82,7 @@ useEffect(() => {
           },
         });
         setOrders(data)
+        console.log(orders);
       } catch (error) {
         console.log(error);
       }
@@ -139,7 +139,7 @@ useEffect(() => {
                       <div>
                       </div>
                     </div>
-                    <p className="dash-card-text">$ {totalSalesAmount}</p>
+                    <p className="dash-card-text">₹{totalSalesAmount}  /-</p>
                   </div>
                 </div>
               </div>
@@ -148,9 +148,9 @@ useEffect(() => {
               <div className=" sales-chart acol-12 col-md-6">
               <canvas id="myChart"></canvas>
               </div>
-              <div className=" orders-table col-12 col-md-6">
+              <div className=" orders-table col-12 col-md-6" style={{marginBottom:'20px'}}>
                 <h4><u>Latest Orders</u></h4>
-                {orders.length<1 ? (<h5>No orders available</h5> ): 
+                {!orders ? (<h5>No orders available</h5> ): 
              ( <table>
   <thead>
     <tr>
@@ -163,14 +163,13 @@ useEffect(() => {
   <tbody>
 
       {orders.map((order,index)=>(
-            <tr>
+         <tr>
 
         <td>{index+1}</td>
         <td>{order.orderID}</td>
-        <td>{order.buyer.name}</td>
-        <td>{order.payment.amount}</td>
+        <td>{order.buyer?.name}</td>
+        <td>₹ {order.payment.originalAmount}</td>
         </tr>
-
       ))}
     
   </tbody>

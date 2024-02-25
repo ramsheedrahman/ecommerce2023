@@ -2,7 +2,7 @@ import  express  from "express";
 const  router=express.Router()
 import formidable from "express-formidable";
 import { isAdmin, requireSignIn } from "../middilewares/authMiddileware.js";
-import { createOrder, createProductController, deleteProductController, getAllMonthlySales, getAllOrders, getClientSecrets, getLatestOrders, getOrder, getProductController, getRelatedProducts, getSingleProductController, invoiceDownload, orderCancellaton, orderStatusUpdate, producByCategory, productFiltersController, productPhotoGetController, searchProductController, updateProductController } from "../controllers/productController.js";
+import { createOrder, createProductController, deleteProductController, getAllMonthlySales, getAllOrders, getClientSecrets, getLatestOrders, getOrder, getProductController, getRelatedProducts, getSingleProductController, invoiceDownload, orderCancellaton, orderStatusUpdate, productByCategory, productFiltersController, productPhotoGetController, searchProductController, updateProductController } from "../controllers/productController.js";
 
 router.post('/create-product',requireSignIn,isAdmin,  formidable(),createProductController)
 router.get('/get-allproducts',getProductController)
@@ -14,7 +14,7 @@ router.post('/filter-products',productFiltersController)
 router.get("/search/:keyword", searchProductController);
 router.get("/get-relatedproducts/:pid/:cid", getRelatedProducts);
 router.post('/payment-intent',getClientSecrets)
-router.get('/get-productbyCategory/:id',producByCategory)
+router.get('/get-productbyCategory/:id',productByCategory)
 router.post('/create-order',  requireSignIn,createOrder )
 router.get('/get-order-products',requireSignIn,getOrder)
 router.put('/cancel-order/:id',requireSignIn,orderCancellaton)

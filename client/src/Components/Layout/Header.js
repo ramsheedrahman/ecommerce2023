@@ -30,7 +30,8 @@ function Header() {
   return (
     <nav  style={{zIndex:'1'}} className={`navbar ${isOpen ? 'mbscreen' : ''}`}>
       <div className="navbar-logo">
-      <li><Link to={"/"}>A-rof Traders</Link></li>
+      <li>  <img className='logo-img' src="../logo.jpg" alt="A-rof Traders Logo" />
+<Link to={"/"}>A-rof Traders</Link></li>
       </div>
       <ul className="navbar-menu">
         <li>

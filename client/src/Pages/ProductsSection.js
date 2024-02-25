@@ -139,8 +139,8 @@ const ProductsSection = () => {
                   </div>      
     ));
 const clearFilter=()=>{
-  setSelectedCategories([])
-  setSelectedPrices([])
+  window.location.reload();
+
 }
   return (
     

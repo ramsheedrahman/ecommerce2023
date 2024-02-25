@@ -127,21 +127,22 @@ function Homepage() {
           <SearchInput />
         </div>
         <div className="col-12 col-md-6 my-1">
-          <div className="responsive-dropdown">
-            <button className="cat-btn" onClick={toggleDropdown}>
-              Categories
-            </button>
-            {showDropdown && (
-              <ul className="cat-ul">
-                {categories.map((category) => (
-                  <li className="category-list" key={category._id}>
-                    <Link to={`category/${category._id}`}>{category.name}</Link>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
+  <div className="responsive-dropdown">
+    <button className="cat-btn" onClick={toggleDropdown}>
+      Categories
+    </button>
+    {showDropdown && (
+      <ul className="cat-ul">
+        {categories && categories.map((category) => (
+          <li className="category-list" key={category._id}>
+            <Link to={`category/${category._id}`}>{category.name}</Link>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</div>
+
 
         <div className="row">
           <div className="col-12 m-2">

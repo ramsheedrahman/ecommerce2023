@@ -16,7 +16,7 @@ function Dashboard() {
   const [orders,setOrders]=useState([])
   const [cart,setCart]=useCart([])
   const User = useSelector((state) => state.user);
-  const totalPurchaseAmount=orders.reduce((total,order)=>total+order.payment.amount,0)
+  const totalPurchaseAmount=orders.reduce((total,order)=>total+order.payment.originalAmount,0)
   const totalCart = cart.reduce((total, item) => total + item.quantity, 0);
 
   useEffect(() => {
@@ -89,7 +89,7 @@ function Dashboard() {
     <div className="col-12 col-md-12 ">
             <div className="table-responsive" style={{marginTop:'2rem'}}>
               <h3><u>Order Details</u></h3>
-              {orders.length<1 ?(<h6 style={{color:'red'}}>Orders not Available.. Pls Make Orders</h6>):(
+              {!orders ?(<h6 style={{color:'red'}}>Orders not Available.. Pls Make Orders</h6>):(
             <Table className="order-table">
               <thead className="table-dark">
                 <tr>
@@ -122,7 +122,7 @@ function Dashboard() {
                       {order.products.reduce((acc, product) => acc + product.quantity, 0)}
                     </td>
                     <td>
-                     {order.payment.amount}
+                     {order.payment.originalAmount}
                     </td>
                   </tr>
                 ))}

@@ -50,8 +50,8 @@ const CartPage = () => {
     <section className="h-100 gradient-custom">
       <div className="container py-5">
         <div className="row d-flex justify-content-center my-4">
-        <h1>{`Hello ${User ? User.name : 'Guest'}`}</h1>
-        <h5 className="mb-0"> You Have {cart.length} Items in Your Cart</h5>
+        <h2>{`Hello ${User ? User.name : 'Guest'}`}</h2>
+        <h3 className="mb-2"> You have {cart.length} Items in Your Cart</h3>
          <p style={{color:'red'}}>{!User? 'Pls Login to Checkout' :''}</p>
           <div className="col-md-8">
             <div className="card mb-4">
